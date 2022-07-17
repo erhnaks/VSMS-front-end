@@ -1,29 +1,5 @@
 "use strict";
 
-const vehicles = [
-  {
-    id: 1,
-    vrm: "LT68KUD",
-    mileage: 1000,
-    description: "Oil Service",
-    cost: 10.99,
-  },
-  {
-    id: 2,
-    vrm: "KS68FVG",
-    mileage: 2000,
-    description: "Oil Service",
-    cost: 30.99,
-  },
-  {
-    id: 3,
-    vrm: "CF16DFU",
-    mileage: 4350,
-    description: "Engine Service",
-    cost: 1023.99,
-  },
-];
-
 let chosenVehicleId = null; //Update functional purpose!
 
 function closeVehicleModal(){ //This function is to enable hide function of the Modal after creating!   
@@ -43,7 +19,7 @@ function closeVehicleModal(){ //This function is to enable hide function of the 
 function submitForm(){
 
   if (!chosenVehicleId) return createService(); //onclick will initiate update function;
-  else updateVehicle();
+  else updateVehicle(chosenVehicleId);
 
 
 }
@@ -82,13 +58,15 @@ function fillFormForUpdate(vehiclePayload) {
 
 
 
-function createService() {
+async function createService() {
   const vrm = document.getElementById("vrm").value;
   const mileage = document.getElementById("mileage").value;
   const description = document.getElementById("description").value;
   const cost = document.getElementById("cost").value;
 
-  const vehicle = { id: vehicles.length +1, vrm, mileage, description, cost };
+  const { data : vehicles} = await axios.post('http://localhost:8080/create', { vrm, mileage, description, cost });  
+
+  const vehicle = { id: vehicles.id , vrm, mileage, description, cost };
 
   const appendData = writeServiceRow(vehicle);
 
@@ -98,11 +76,17 @@ function createService() {
   closeVehicleModal();
 }
 
-function updateVehicle() {
+async function updateVehicle() {
 const vrm = document.getElementById('vrm').value;
 const mileage = document.getElementById('mileage').value;
 const description = document.getElementById('description').value;
 const cost = document.getElementById('cost').value;
+
+await axios({
+  method: "put",
+  url: "http://localhost:8080/update/" + chosenVehicleId,
+  data: { vrm, mileage, description, cost }
+});
 
 const vrmField = document.querySelector( '#row-' + chosenVehicleId + " td:nth-child(2)" ); //Selecting the child <tr> elements after the id>
 const mileagefield = document.querySelector( '#row-' + chosenVehicleId + " td:nth-child(3)" );
@@ -122,7 +106,9 @@ costField.innerHTML = cost;
 closeVehicleModal();
 }
 
-function deleteVehicle(vehicleId) {
+async function deleteVehicle(vehicleId) {
+await axios.delete("http://localhost:8080/remove/" + vehicleId);
+
 
 const userElement =  document.getElementById("row-" + vehicleId);
 userElement.remove();
@@ -131,9 +117,11 @@ userElement.remove();
 
 
 
-function loadvehicles() {
+async function loadvehicles() {
   let tableBodyContent = "";
 
+  const { data : vehicles} = await axios.get('http://localhost:8080/getAll') //Fetching Object from Axios then returning DATA;
+// After reconstructing data this line returns it to vehicles;
   vehicles.forEach(vehicles => (tableBodyContent += writeServiceRow(vehicles)));
 
   const tableBody = document.getElementById("table-body");
