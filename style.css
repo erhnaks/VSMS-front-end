@@ -1,0 +1,22 @@
+.h1{
+
+  color: #004050;
+  font-weight: bold;
+  text-align: center;
+  font-style: italic;
+
+}
+
+.add{
+  background-color: rgb(37, 8, 200);
+        color: white;
+        border: none;
+        height: 37px;
+        width: 90px;
+        border-radius: 37px;
+        cursor: pointer;
+        margin-right: 8px;
+        transition: opacity 0.1s;
+        margin-bottom: 1%;
+        font-size: large;
+}

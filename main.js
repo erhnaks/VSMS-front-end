@@ -28,7 +28,7 @@ function writeServiceRow(vehicle) {
   const vehicleUpdate = encodeURIComponent(JSON.stringify(vehicle)); //Coding the data for the Update payload;
   return `
   <tr id="row-${vehicle.id}">
-    <td>${vehicle.id}</td>  
+    <td>${vehicle.id}</td>
     <td>${vehicle.vrm}</td>
     <td>${vehicle.mileage}</td>
     <td>${vehicle.description}</td>
@@ -77,10 +77,12 @@ async function createService() {
 }
 
 async function updateVehicle() {
+
 const vrm = document.getElementById('vrm').value;
 const mileage = document.getElementById('mileage').value;
 const description = document.getElementById('description').value;
 const cost = document.getElementById('cost').value;
+
 
 await axios({
   method: "put",
