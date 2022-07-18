@@ -34,9 +34,9 @@ function writeServiceRow(vehicle) {
     <td>${vehicle.description}</td>
     <td>${vehicle.cost}</td>
     <td class="w-25">
-      <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#vehicleModal"
+      <button class="UpdateButton" data-bs-toggle="modal" data-bs-target="#vehicleModal"
       onclick="fillFormForUpdate('${vehicleUpdate}')">Update</button>
-      <button class="btn btn-danger" onclick="deleteVehicle('${vehicle.id}')">Delete</button>
+      <button class="DeleteButton" onclick="deleteVehicle('${vehicle.id}')">Delete</button>
     </td>
   </tr>
 `;
